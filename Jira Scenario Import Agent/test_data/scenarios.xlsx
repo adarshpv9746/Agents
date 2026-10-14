@@ -1,0 +1,84 @@
+Test Case ID	Application and page under testing	Pre Condition	Scenario Description	Steps No	Test Steps	Expected Result
+E2E_TS11_TC001	DXP -> Account Dashboard (Desktop)	"1. Account Advisor test user with exactly ONE DAF (QA7/APINT).
+2. Account Dashboard deployed (Account Summary replaced).
+3. DAF has balances, activity and investment allocation data.
+4. Page-level failure condition available for the [Error] steps"	"Component: Dashboard Landing & Paths
+(Happy Path + Negative Path)
+
+Validate that a single-DAF Account Advisor lands directly on the NEW Account Dashboard, that the page structure, header CTAs and global navigation work, and that a page-level failure shows the error state and recovers on refresh."	Step 1	Launch the DXP QA7/APINT portal URL.	Vanguard Charitable login page loads successfully.
+				Step 2	Log in with valid single-DAF Account Advisor credentials.	User is NOT routed to Account Selection; lands directly on the Account Dashboard.
+				Step 3	Verify top navigation and utility header.	ACCOUNT DASHBOARD tab present and active; no ACCOUNT SUMMARY tab; header shows Need Assistance?, account switcher '<Account No> - <Fund Name>', bell and profile icon.
+				Step 4	Verify page header.	Breadcrumb 'Home / Account Dashboard'; greeting 'Hello <Title> <First> <Last>'; account dropdown shows the logged-in DAF; GIVE TO CHARITIES and MAKE A CONTRIBUTION displayed.
+				Step 5	Verify all modules render in Figma order with no error state.	Overview, Complete Your Setup, Manage Your Account, 4 activity cards, Balance Over Time, Investment Allocation, MyStyle carousel and footer displayed; no red banner or module warning.
+				Step 6	Click GIVE TO CHARITIES, verify, then return via ACCOUNT DASHBOARD tab.	Grant recommendation page opens for the current DAF; dashboard reloads.
+				Step 7	Click MAKE A CONTRIBUTION, verify, then return.	Make a contribution page opens for the current DAF; dashboard reloads.
+				Step 8	Click each top nav tab (GRANTS, CONTRIBUTIONS, INVESTMENTS, MY ACCOUNT, MYGIVING), returning via ACCOUNT DASHBOARD each time.	Each tab opens its correct page (GRANTS shows the correct Grants page); ACCOUNT DASHBOARD returns to the dashboard.
+				Step 9	Click breadcrumb 'Home' and sample footer links (Contact Us, FAQs, Privacy Policy).	Each navigates to the expected page.
+				Step 10	[Error] Reload the dashboard with the page-level failure condition active.	Red banner 'Something went wrong while loading this page. Please refresh the page or try again later.'; balances 'No data available'; cards, BOT and IA show the unavailable message; top nav and header switcher still work.
+				Step 11	[Recovery] Restore the service and refresh.	Dashboard loads normally with no error state.
+		Account Advisor (Beta/General user) with exactly ONE DAF	Validate the user with single DAF is navigated to DP Account Summary page		"1.Login as Account Advisor with a single DAF account.
+2. On Successful login: Check whether the DP Account Summary page of the DAF account loads."	The DP Account Summary page of the DAF account loads
+					"1. Click each top nav tab (GRANTS, CONTRIBUTIONS, INVESTMENTS, MY ACCOUNT, MYGIVING), and Check whether ACCOUNT SUMMARY tab appears in each page, returning via ACCOUNT SUMMARY each time.
+2. Click breadcrumb 'Home' from (GRANTS, CONTRIBUTIONS, INVESTMENTS, MY ACCOUNT) and validate the Navigation"	"Each tab/page opens with ACCOUNT SUMMARY Tab on top navigation bar.
+Each time the click on the ACCOUNT SUMMARY tab from top navigation bar, returns the user to DP Account Summary page.
+Each time the click on the breadcrumb 'Home' navigates the user to DP Account Summary."
+E2E_TS11_TC002	DXP -> Account Dashboard (Desktop)	"1. Interested Party (Professional Contact / Trusted Advisor, Alpha) test user holding 2+ DAFs with different data.
+2. DAF toggle unavailable condition for the [Error] steps (env condition)."	"Component: Dashboard Landing & Paths
+(Happy Path + Negative Path)
+
+Validate the multi-DAF / Trusted Advisor path: Account Selection to Dashboard, switching DAFs through the dashboard toggle, header switcher and Account Selection tab with data refreshing, and the DAF toggle unavailable state."	Step 1	Launch the DXP QA7/APINT portal URL.	Vanguard Charitable login page loads successfully.
+				Step 2	Log in with valid multi-DAF Trusted Advisor credentials.	User lands on Account Selection (not the dashboard).
+				Step 3	Select DAF A.	User lands on the Account Dashboard for DAF A; dropdown and header switcher show DAF A; ACCOUNT SELECTION tab visible.
+				Step 4	Capture DAF A Current/Available Balance and latest Grant recipient.	Values stored in suite variables.
+				Step 5	Refresh the browser.	Dashboard reloads on DAF A; dropdown and header switcher still show DAF A (selection persisted).
+				Step 6	Open the dashboard account dropdown.	Overlay with X; all DAFs listed as '<Account No> - <Fund Name>', scrollable, no duplicates; 'Open Additional Account' link at the bottom.
+				Step 7	Close with X, reopen and select DAF B.	Dropdown closes without change; selecting DAF B reloads the dashboard for DAF B with different balances/cards than DAF A.
+				Step 8	Switch back to DAF A using the header account switcher.	Dashboard shows DAF A; values match those captured.
+				Step 9	Click ACCOUNT SELECTION tab and select DAF B.	Account Selection page loads; selecting DAF B returns to the dashboard for DAF B.
+				Step 10	[Error] With the DAF toggle unavailable, select another DAF from the dashboard dropdown.	Red banner 'Switching between accounts is not available from the dashboard at this time. Please use the account selector in the main navigation.'; dashboard stays on DAF B.
+				Step 11	Switch via the header selector and dismiss the banner.	Switch succeeds; banner closes with no empty container.
+		Interested Party (Professional Contact / Trusted Advisor, Beta/General) test user holding 2+ DAFs with different data.	Validate the multi-DAF / Trusted Advisor path: Land in DP FA Dashboard		"Log in with valid multi-DAF Trusted Advisor credentials.
+Validate whether the user lands in FA Dashboard page."	"The user (IP - Trusted Advisor) lands FA Dashboard in DP.
+All existing functionalities for FA Dashboard and Top Navigation bar with FA Dashboard behaves as in the present day in DP"
+E2E_TS11_TC003	DXP -> Account Dashboard (Desktop)	"1. Account Advisor (Alpha) test user with exactly ONE DAF before the run, eligible to open an account (each run creates a DAF - use a fresh single-DAF user per run, otherwise login lands on Account Selection), with phone/email/primary address on profile.
+2. Run on QA7 (creates a new DAF)."	"Component: Open Another Account
+(Happy Path)
+
+Validate the Open Another Account flow end-to-end: entry modal from both entry points, pre-filled account information wizard with multiple addresses, account creation, Contribute Later, and return to the dashboard via View Account."	Step 1	Launch the DXP QA7/APINT portal URL.	Vanguard Charitable login page loads successfully.
+				Step 2	Log in with valid Account Advisor credentials.	User is authenticated and lands on the Account Dashboard (ACCOUNT DASHBOARD tab active).
+				Step 3	Click 'Open Another Account' in Manage Your Account; click Cancel; reopen and click X.	Modal 'We'll use your profile to set up your account' opens with body text, CONTINUE, Cancel and X; Cancel and X both close it with no navigation.
+				Step 4	Open the account dropdown and click 'Open Additional Account'.	Same entry modal opens.
+				Step 5	Click CONTINUE.	/open-an-additional-account/account-information/ loads; Step 1 'Provide account information' active; Steps 2 'Legacy options' and 3 'Review and Submit' listed; Primary Advisor tab shown.
+				Step 6	Verify pre-filled profile data.	Title, First/Last Name, DOB, Gender and masked SSN last-4 pre-filled and read-only; phone, email and primary address pre-filled.
+				Step 7	Add a Home address (fill required fields); add a Mailing address and Remove it.	New block shows Address Type, Primary Address radio and Remove link; only one Primary allowed; Remove deletes the block; Add Address disabled until required fields filled.
+				Step 8	Verify Preferred Delivery Method and second advisor section.	Electronic delivery (suggested) selected by default with 'View additional information'; Paper and U.S. mail with email notification options; 'Add secondary advisor', EXIT, CLEAR, NEXT displayed.
+				Step 9	Click NEXT, complete Legacy options with defaults, review and submit.	Account Created page (/confirm/): 'Success! You have created an additional account.', new Account No and Name, CONTRIBUTE LATER and CONTRIBUTE NOW; top nav shows ACCOUNT DASHBOARD.
+				Step 10	Capture the new Account No and click CONTRIBUTE LATER.	Contribute to account later' page with Steps 1-3, FAQs link, 'Estimated Initial Contribution (Optional)' dropdown, VIEW ACCOUNT; top nav shows ACCOUNT DASHBOARD.
+				Step 11	Click VIEW ACCOUNT.	User returns to the Account Dashboard; the new account appears in the DAF dropdown.
+E2E_TS11_TC004	DXP -> Account Dashboard (Desktop)	"1. Account Advisor (Alpha) test user with exactly ONE DAF before the run, eligible to open an account (each run creates a DAF - use a fresh single-DAF user per run, otherwise login lands on Account Selection).
+2. Run on QA7 (creates a new DAF)."	"Component: Open Another Account
+(Happy Path)
+
+Validate Open Another Account -> Contribute Now: Make a Contribution opens for the NEW account with the corrected navigation, and the new empty DAF shows zero-state balances, setup tracker and activity cards on the dashboard."	Step 1	Launch the DXP QA7/APINT portal URL.	Vanguard Charitable login page loads successfully.
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
